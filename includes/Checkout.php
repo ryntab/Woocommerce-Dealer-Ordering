@@ -9,7 +9,7 @@ class Checkout
 {
     function __construct() {
         add_action( 'woocommerce_after_checkout_billing_form', [ $this, 'render_fields' ], 5, 1 );
-        add_action( 'woocommerce_checkout_create_order', [ $this, 'send_field_data' ], 5, 2 );
+        add_action( 'woocommerce_checkout_order_processed', [ $this, 'send_field_data' ], 99, 3 );
         add_action( 'woocommerce_checkout_process', [ $this, 'check_field_data' ], 5 );
     }
 
@@ -136,51 +136,25 @@ class Checkout
     }
 
     //Update the order meta with field value
-    public function send_field_data($order, $data)
+    public function send_field_data($order_id, $posted_data, $order)
     {
         global $wpdb;
         $user = wp_get_current_user();
+        $customer = get_user_by( 'email', sanitize_text_field($_POST['customer_email']));
 
-        if (isset($_POST['customer_first_name']) && !empty($_POST['customer_first_name'])) {
-            $order->update_meta_data('customer_first_name', sanitize_text_field($_POST['customer_first_name']));
-        }
-        if (isset($_POST['customer_last_name']) && !empty($_POST['customer_last_name'])) {
-            $order->update_meta_data('customer_last_name', sanitize_text_field($_POST['customer_last_name']));
-        }
-        if (isset($_POST['customer_email']) && !empty($_POST['customer_email'])) {
-            $order->update_meta_data('customer_email', sanitize_text_field($_POST['customer_email']));
-        }
-        if (isset($_POST['customer_country']) && !empty($_POST['customer_country'])) {
-            $order->update_meta_data('customer_country', sanitize_text_field($_POST['customer_country']));
-        }
-        if (isset($_POST['customer_street_address']) && !empty($_POST['customer_street_address'])) {
-            $order->update_meta_data('customer_street_address', sanitize_text_field($_POST['customer_street_address']));
-        }
-        if (isset($_POST['customer_town']) && !empty($_POST['customer_town'])) {
-            $order->update_meta_data('customer_town', sanitize_text_field($_POST['customer_town']));
-        }
-        if (isset($_POST['customer_state']) && !empty($_POST['customer_state'])) {
-            $order->update_meta_data('customer_state', sanitize_text_field($_POST['customer_state']));
-        }
-        if (isset($_POST['customer_zip']) && !empty($_POST['customer_zip'])) {
-            $order->update_meta_data('customer_zip', sanitize_text_field($_POST['customer_zip']));
-        }
-
-        var_dump($order);
-        die();
+        $address = $_POST['customer_street_address']. ', ' . $_POST['customer_town'] . ' ' . $_POST['customer_state'] . ', ' . $_POST['customer_zip'] . ', ' . $_POST['customer_country']; 
 
         $wpdb->insert
         ('wp_dealer_customers', array(
-        'order_id' => $order->get_id(),
+        'order_id' => $order_id,
         'dealer_id' => $user->ID,
-        'customer_user_id' => Null,  
+        'customer_user_id' => $customer->ID, 
         'customer_first_name' =>  sanitize_text_field($_POST['customer_first_name']), 
         'customer_last_name' => sanitize_text_field($_POST['customer_last_name']), 
         'customer_email' => sanitize_text_field($_POST['customer_email']), 
-        'customer_address' => sanitize_text_field($_POST['customer_street_address']), 
-        'customer_user_id' => Null, 
+        'customer_address' => $address, 
         'warranty_claimed' => Null)
-        );        
+        );   
     }
 
     //Alert handling
