@@ -21,12 +21,6 @@
 
 ![screenshot]()
 
-## About
-
-Made by [Tareq Hasan](https://github.com/tareq1988) from [weDevs](https://wedevs.com).
-
-*Found anything that can be improved? You are welcome to contribute.*
-
 <p align="center">
     <br/><br/>
     Made with 💜 by <a href="https://glidersports.com/">Glidersports Dev Team</a>.<br/>
