@@ -6,7 +6,6 @@
 
  - Dealers can set a customer on checkout
    - Customer will be attached to the order, through order meta.
-   - Uglify JS for production
  - Adds data table viewer built with [vue] to admin dashboard
  - View status of customer warranties
 
