@@ -45,10 +45,20 @@ class Example extends WP_REST_Controller {
      */
     public function get_orders( $request ) {
         $args = array(
-            'created_via' => 'checkout',
-        );
-        $orders = wc_get_orders( $args );
-        $response = rest_ensure_response( $orders );
+            'limit' => 9999,
+            'return' => 'ids',
+            'date_completed' => '2018-10-01...2018-10-10',
+            'status' => 'completed'
+           );
+           $data = [];
+           $query = new WC_Order_Query( $args );
+           $orders = $query->get_orders();
+           foreach( $orders as $order_id ) {
+            array_push($data, $order_id);
+           }
+
+
+        $response = rest_ensure_response(  $data );
 
         return $response;
     }

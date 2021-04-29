@@ -8,10 +8,9 @@ namespace App;
 class Checkout
 {
     function __construct() {
-        add_action( 'woocommerce_after_checkout_billing_form', [ $this, 'render_fields' ], 5 );
-        add_action( 'woocommerce_checkout_create_order', [ $this, 'send_field_data' ], 5 );
+        add_action( 'woocommerce_after_checkout_billing_form', [ $this, 'render_fields' ], 5, 1 );
+        add_action( 'woocommerce_checkout_create_order', [ $this, 'send_field_data' ], 5, 2 );
         add_action( 'woocommerce_checkout_process', [ $this, 'check_field_data' ], 5 );
-        add_action( 'woocommerce_admin_order_data_after_billing_address', [ $this, 'my_custom_checkout_field_display_admin_order_meta' ], 5 );
     }
 
     /**
@@ -113,7 +112,7 @@ class Checkout
                 array(
                     'type'      => 'state',
                     'class'     => array('chzn-drop', 'form-row form-row-wide'),
-                    'label'     => __('Country'),
+                    'label'     => __('State'),
                     'placeholder' => __('Choose Your Customers State.'),
                     'required'  => true,
                     'clear'     => true
@@ -139,6 +138,9 @@ class Checkout
     //Update the order meta with field value
     public function send_field_data($order, $data)
     {
+        global $wpdb;
+        $user = wp_get_current_user();
+
         if (isset($_POST['customer_first_name']) && !empty($_POST['customer_first_name'])) {
             $order->update_meta_data('customer_first_name', sanitize_text_field($_POST['customer_first_name']));
         }
@@ -163,6 +165,22 @@ class Checkout
         if (isset($_POST['customer_zip']) && !empty($_POST['customer_zip'])) {
             $order->update_meta_data('customer_zip', sanitize_text_field($_POST['customer_zip']));
         }
+
+        var_dump($order);
+        die();
+
+        $wpdb->insert
+        ('wp_dealer_customers', array(
+        'order_id' => $order->get_id(),
+        'dealer_id' => $user->ID,
+        'customer_user_id' => Null,  
+        'customer_first_name' =>  sanitize_text_field($_POST['customer_first_name']), 
+        'customer_last_name' => sanitize_text_field($_POST['customer_last_name']), 
+        'customer_email' => sanitize_text_field($_POST['customer_email']), 
+        'customer_address' => sanitize_text_field($_POST['customer_street_address']), 
+        'customer_user_id' => Null, 
+        'warranty_claimed' => Null)
+        );        
     }
 
     //Alert handling

@@ -172,12 +172,13 @@ final class Woo_Dealer_Ordering {
 
 		$sql = "CREATE TABLE `{$wpdb->base_prefix}dealer_customers` (
 		order_id INT UNSIGNED NULL, 
+        dealer_id INT NULL,
+        customer_user_id INT UNSIGNED NULL, 
 		customer_first_name text NULL,
         customer_last_name text NULL,
         customer_email text NULL,
         customer_address text NULL,     
-		customer_user_id INT UNSIGNED NULL, 
-		warranty_claimed BOOL, 
+		warranty_claimed BOOL NULL, 
 		PRIMARY KEY  (order_id)) $charset_collate;";
 		require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
 		dbDelta($sql);
