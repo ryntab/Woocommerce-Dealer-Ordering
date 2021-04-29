@@ -1,3 +1,7 @@
+[![Build Status](https://www.travis-ci.org/wpugph/WordPress-Plugin-Template.svg?branch=master)](https://www.travis-ci.org/wpugph/Woocommerce-Dealer-Ordering)
+
+`~Current Version:0.1~`
+
 # Woocommerce Dealer Ordering 🔥
 
  - Dealers can set a customer on checkout
