@@ -28,7 +28,7 @@ class Example extends WP_REST_Controller {
             array(
                 array(
                     'methods'             => \WP_REST_Server::READABLE,
-                    'callback'            => array( $this, 'get_orders' ),
+                    'callback'            => array( $this, 'get_dealer_orders' ),
                     'permission_callback' => array( $this, 'get_orders_permissions_check' ),
                     'args'                => $this->get_collection_params(),
                 )
@@ -43,24 +43,19 @@ class Example extends WP_REST_Controller {
      *
      * @return WP_REST_Response|WP_Error Response object on success, or WP_Error object on failure.
      */
-    public function get_orders( $request ) {
-        $args = array(
-            'limit' => 9999,
-            'return' => 'ids',
-            'date_completed' => '2018-10-01...2018-10-10',
-            'status' => 'completed'
-           );
-           $data = [];
-           $query = new WC_Order_Query( $args );
-           $orders = $query->get_orders();
-           foreach( $orders as $order_id ) {
-            array_push($data, $order_id);
-           }
+    public function get_dealer_orders( $request ) {
+        global $wpdb;
+        $order = $wpdb->get_results($wpdb->prepare("SELECT * FROM `wp_dealer_customers`"));
+
+        $data['page'] = 1;
+        $data['results'] = $order;
+        $data['total_pages'] = 1;
+        $data['total_results'] = 4;
+        
 
 
-        $response = rest_ensure_response(  $data );
 
-        return $response;
+        return $data;
     }
 
     /**
