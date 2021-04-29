@@ -14,12 +14,6 @@
 1. Clone this repository in your plugins folder
 1. Activate the plugin
 
-## 👨‍💻 Post Installation
-
-1. Activate
-1. Save permalinks
-1. Done 👍
-
 ## 🎁 Preview
 
 ![screenshot]()
