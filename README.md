@@ -1,4 +1,4 @@
-# 📦 Woocommerce Dealer Ordering
+# Woocommerce Dealer Ordering 🔥‍
 
  - Dealers can set a customer on checkout
    - Customer will be attached to the order, through order meta.
