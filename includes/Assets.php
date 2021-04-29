@@ -54,6 +54,7 @@ class Assets {
             $deps = isset( $style['deps'] ) ? $style['deps'] : false;
 
             wp_register_style( $handle, $style['src'], $deps, BASEPLUGIN_VERSION );
+            wp_enqueue_style('Buefy', 'https://unpkg.com/buefy@0.9.7/dist/buefy.min.css');
         }
     }
 
@@ -110,7 +111,9 @@ class Assets {
             'baseplugin-admin' => [
                 'src' =>  BASEPLUGIN_ASSETS . '/css/admin.css'
             ],
+      
         ];
+        
 
         return $styles;
     }

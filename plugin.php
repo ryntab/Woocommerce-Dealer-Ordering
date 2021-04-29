@@ -199,6 +199,8 @@ final class Woo_Dealer_Ordering {
      */
     public function includes() {
 
+        require_once BASEPLUGIN_INCLUDES . '/Api.php';
+
         require_once BASEPLUGIN_INCLUDES . '/Assets.php';
 
 
@@ -220,7 +222,6 @@ final class Woo_Dealer_Ordering {
             // require_once BASEPLUGIN_INCLUDES . '/class-ajax.php';
         }
 
-        require_once BASEPLUGIN_INCLUDES . '/Api.php';
     }
 
     /**

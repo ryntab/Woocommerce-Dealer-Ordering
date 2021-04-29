@@ -12,8 +12,8 @@ class Example extends WP_REST_Controller {
      * [__construct description]
      */
     public function __construct() {
-        $this->namespace = 'myapp/v1';
-        $this->rest_base = 'test';
+        $this->namespace = 'dealer/api';
+        $this->rest_base = 'orders';
     }
 
     /**
@@ -28,8 +28,8 @@ class Example extends WP_REST_Controller {
             array(
                 array(
                     'methods'             => \WP_REST_Server::READABLE,
-                    'callback'            => array( $this, 'get_items' ),
-                    'permission_callback' => array( $this, 'get_items_permissions_check' ),
+                    'callback'            => array( $this, 'get_orders' ),
+                    'permission_callback' => array( $this, 'get_orders_permissions_check' ),
                     'args'                => $this->get_collection_params(),
                 )
             )
@@ -43,12 +43,12 @@ class Example extends WP_REST_Controller {
      *
      * @return WP_REST_Response|WP_Error Response object on success, or WP_Error object on failure.
      */
-    public function get_items( $request ) {
-        $items = [
-            'foo' => 'bar'
-        ];
-
-        $response = rest_ensure_response( $items );
+    public function get_orders( $request ) {
+        $args = array(
+            'created_via' => 'checkout',
+        );
+        $orders = wc_get_orders( $args );
+        $response = rest_ensure_response( $orders );
 
         return $response;
     }
@@ -60,7 +60,7 @@ class Example extends WP_REST_Controller {
      *
      * @return true|WP_Error True if the request has read access, WP_Error object otherwise.
      */
-    public function get_items_permissions_check( $request ) {
+    public function get_orders_permissions_check( $request ) {
         return true;
     }
 
