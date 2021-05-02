@@ -44,12 +44,16 @@ class Order
     {
         global $post;
         global $wpdb;
+<<<<<<< HEAD
         
 
+=======
+>>>>>>> 9884d2ab8d3d2dd79e82291eeec4b1d7df9d22c2
         $id =  intVal($post->ID);
         $customer = $wpdb->get_results($wpdb->prepare("SELECT * FROM `wp_dealer_customers` WHERE `order_id` = '$id'"));
         $warranty = $wpdb->get_results($wpdb->prepare("SELECT * FROM `wp_user_warranties` WHERE `order_id` = '$id'"));
 
+<<<<<<< HEAD
         $first .= $customer[0]->customer_first_name;
         $last .= $customer[0]->customer_last_name;
         $email .= $customer[0]->customer_email;
@@ -109,21 +113,50 @@ class Order
         $html .= get_user_initials($first, $last);
         $html .= $warrantyAlert;
         $html .= get_matched_user($customer_ID);
+=======
+        if ($warranty[0] == Null){
+            $warrantyAlert = '<span class="warrantyAlert noserial">No Serial Active</span>';
+        } else if ($warranty[0]->claimed_at != Null) {
+            $warrantyAlert = '<span class="warrantyAlert claimed">Warranty Claimed</span>';
+        } else if ($warranty[0]->claimed_at == Null) {
+            $warrantyAlert = '<span class="warrantyAlert unclaimed">Warranty Not Claimed</span>';
+        }
+
+        $first .= $customer[0]->customer_first_name;
+        $last .= $customer[0]->customer_last_name;
+        $email .= $customer[0]->customer_email;
+        $address .= $customer[0]->customer_address;
+        $customer_ID .= $customer[0]->customer_user_id;
+
+
+        $html .= '<div style="width: 50%; display: inline-block; vertical-align: top;" id="order_data" class="order_data_column">';
+        $html .= '<span class="customer-avatar">' . substr($first, 0, 1) . ' ' . substr($last, 0, 1) . '</span>';
+        $html .= $warrantyAlert;
+        $html .= '<p>Account ID: ' . $customer_ID . '</p>';
+>>>>>>> 9884d2ab8d3d2dd79e82291eeec4b1d7df9d22c2
         $html .= '</div>';
 
         $html .= '<div style="width: 50%; display: inline-block;" id="order_data" class="order_data_column">';
         $html .= '<h3>Billing</h3>';
         $html .= '<p>First Name: ' . $first . '</p>';
+<<<<<<< HEAD
         $html .= '<p>Last Name: ' . $last . '</p>';
         $html .= '<p>Email: ' . $email . '</p>';
         $html .= '<p>Address: ' . $address . '</p>';
         $html .= '</div>';
 
         $html .= alert_customer($warrantyClaimed, $warranty);
+=======
+        $html .= '<p>Last: Name' . $last . '</p>';
+        $html .= '<p>Email: ' . $email . '</p>';
+        $html .= '<p>Address: ' . $address . '</p>';
+        $html .= '</div>';
+>>>>>>> 9884d2ab8d3d2dd79e82291eeec4b1d7df9d22c2
         echo $html;
         ?>
         <style>
         .customer-avatar{
+<<<<<<< HEAD
             font-size: 12px;
             background-color: #efefef;
             padding: 20px;
@@ -134,6 +167,9 @@ class Order
             color: #cacaca;
             display: block;
             border-radius: 50%;
+=======
+            font-size: 18px; background-color: #efefef; padding: 20px; font-weight: 900; color: #cacaca; display: block; width: fit-content; border-radius: 50%;
+>>>>>>> 9884d2ab8d3d2dd79e82291eeec4b1d7df9d22c2
         }
         .warrantyAlert {
             background-color: #efefef;
