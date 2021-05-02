@@ -4,3 +4,14 @@
     font-family: 'dashicons' !important;
 }
 
+.warrantyAlert {
+    background-color: #dbecff;
+    padding: 5px 10px;
+    color: #167df0;
+    border-radius: 5px;
+    position: absolute;
+    z-index: 999;
+    top: 0;
+    font-size: 13px;
+    right: 20px;
+}
