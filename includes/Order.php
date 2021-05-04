@@ -34,9 +34,7 @@ class Order
         $last = $customer[0]->customer_last_name ?: get_post_meta($id, 'customer_last_name', true);
         $email = $customer[0]->customer_email ?: get_post_meta($id, 'customer_email', true);
         $customer_ID = $customer[0]->customer_user_id ?: null;
-        $address = $customer[0]->customer_address ?: get_post_meta($id, 'customer_country', true) . 
-                    get_post_meta($id, 'customer_street_address', true) . get_post_meta($id, 'customer_town', true) . 
-                    get_post_meta($id, 'customer_state', true)  .  get_post_meta($id, 'customer_zip', true);
+        $address = $customer[0]->customer_address ?: get_post_meta($id, 'customer_country', true) . get_post_meta($id, 'customer_street_address', true) . get_post_meta($id, 'customer_town', true) . get_post_meta($id, 'customer_state', true)  .  get_post_meta($id, 'customer_zip', true);
         
 
 
@@ -50,17 +48,18 @@ class Order
 
 
         function alert_customer($warranty){
+            
             if ($warranty[0]->registered_at != Null){
                 $earlier = new \DateTime($warranty[0]->registered_at);
                 $later = new \DateTime();
                 $daysSince = $later->diff($earlier);
                 
-                if ($daysSince->d > 3) {
+                if ($daysSince->d > get_option('wrs_remind_admin_email_again')) {
                     $html = NULL;
-                    $html .= '<div style="width: 100%;" class="order_alert_customer" id="order_data">';
-                    $html .= '<h3>Its been: '.$daysSince->d.' days since a warranty alert email was sent to the customer. They have still yet to register their order for warranty. Consider sending a reminder email!</h3>';
+                    $html .= '<div style="width: 100%;" class="order_alert_customer">';
+                    $html .= '<p>Its been: '.$daysSince->d.' days since a warranty alert email was sent to the customer. They have still yet to register their order for warranty. Consider sending a reminder email!</p>';
                     $html .= '</div>';
-                    $html .= '<div id="order_data" class="emailer_send_alert">';
+                    $html .= '<div class="emailer_send_alert">';
                     $html .= '<button type="submit" id="send-alert" class="button save_order button-primary">Send a reminder Email</button>';
                     $html .= '</div>';
                     return $html;
@@ -88,21 +87,24 @@ class Order
         }
 
         $html = NULL;
-        $html .= '<div style="width: 50%; display: inline-block; vertical-align: top;" id="order_data" class="order_data_column">';
+        $html .= '<div style="padding: 20px"><div style="width: 50%; display: inline-block; vertical-align: top;">';
         $html .= get_user_initials($first, $last);
         $html .= $warrantyAlert;
         $html .= get_matched_user($customer_ID);
         $html .= '</div>';
 
-        $html .= '<div style="width: 50%; display: inline-block;" id="order_data" class="order_data_column">';
+        $html .= '<div style="width: 50%; display: inline-block;">';
         $html .= '<h3>Billing</h3>';
         $html .= '<p>First Name: '. $first .'</p>';
         $html .= '<p>Last Name: '. $last .'</p>';
         $html .= '<p>Email: '. $email .'</p>';
         $html .= '<p>Address: '. $address .'</p>';
         $html .= '</div>';
-
         $html .= alert_customer($warranty);
+        $html .= '</div>';
+
+
+  
         echo $html;
         ?>
         <style>
