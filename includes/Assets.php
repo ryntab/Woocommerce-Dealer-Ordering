@@ -55,7 +55,10 @@ class Assets {
             $deps = isset( $style['deps'] ) ? $style['deps'] : false;
 
             wp_register_style( $handle, $style['src'], $deps, BASEPLUGIN_VERSION );
-            wp_enqueue_style('Buefy', 'https://unpkg.com/buefy@0.9.7/dist/buefy.min.css');
+
+            if (is_admin() && strpos($_SERVER['REQUEST_URI'],'vue-app') !== false) {
+                wp_enqueue_style('Buefy', 'https://unpkg.com/buefy@0.9.7/dist/buefy.min.css');
+            }
         }
     }
 

@@ -1,6 +1,6 @@
 <template>
   <div class="app-settings">
-    The Settings Page
+    The Settings
   </div>
 </template>
 
