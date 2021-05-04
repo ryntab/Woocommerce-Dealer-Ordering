@@ -39,6 +39,7 @@ class Assets {
             $version   = isset( $script['version'] ) ? $script['version'] : BASEPLUGIN_VERSION;
 
             wp_register_script( $handle, $script['src'], $deps, $version, $in_footer );
+            wp_enqueue_script( 'admin_order', BASEPLUGIN_ASSETS . '/js/order.js');
         }
     }
 
@@ -88,7 +89,7 @@ class Assets {
                 'deps'      => [ 'jquery', 'baseplugin-vendor', 'baseplugin-runtime' ],
                 'version'   => filemtime( BASEPLUGIN_PATH . '/assets/js/admin.js' ),
                 'in_footer' => true
-            ]
+            ],
         ];
 
         return $scripts;

@@ -202,6 +202,10 @@ final class Woo_Dealer_Ordering {
 
         require_once BASEPLUGIN_INCLUDES . '/Api.php';
 
+
+        require_once BASEPLUGIN_INCLUDES . '/Mailer.php';
+
+
         require_once BASEPLUGIN_INCLUDES . '/Assets.php';
 
 
@@ -257,10 +261,11 @@ final class Woo_Dealer_Ordering {
             // $this->container['ajax'] =  new App\Ajax();
         }
 
-        $this->container['checkout'] = new App\Order();
+        $this->container['order'] = new App\Order();
         $this->container['checkout'] = new App\Checkout();
         $this->container['api'] = new App\Api();
         $this->container['assets'] = new App\Assets();
+        $this->container['mailer'] = new App\Mailer();
     }
 
     /**

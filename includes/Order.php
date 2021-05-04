@@ -27,10 +27,6 @@ class Order
 
         $id =  intVal($post->ID);
 
-        if (get_post_meta($id, 'customer_first_name', true)){
-            $version = 1.0;
-        }   
-
         $customer = $wpdb->get_results($wpdb->prepare("SELECT * FROM `wp_dealer_customers` WHERE `order_id` = '$id'"));
         $warranty = $wpdb->get_results($wpdb->prepare("SELECT * FROM `wp_user_warranties` WHERE `order_id` = '$id'"));
 
@@ -46,26 +42,26 @@ class Order
 
         if ($warranty[0] == Null){
             $warrantyAlert = '<span class="warrantyAlert noserial">No Serial Active</span>';
-            $warrantyClaimed = false;
         } else if ($warranty[0]->claimed_at != Null) {
-            $warrantyClaimed = true;
             $warrantyAlert = '<span class="warrantyAlert claimed">Warranty Claimed</span>';
         } else if ($warranty[0]->claimed_at == Null) {
-            $warrantyClaimed = false;
             $warrantyAlert = '<span class="warrantyAlert unclaimed">Warranty Not Claimed</span>';
         }
 
-        function alert_customer($warrantyClaimed, $warranty){
-            if ($warrantyClaimed == false and $warranty[0] != Null){
+
+        function alert_customer($warranty){
+            if ($warranty[0]->registered_at != Null){
                 $earlier = new \DateTime($warranty[0]->registered_at);
                 $later = new \DateTime();
                 $daysSince = $later->diff($earlier);
-                if ($daysSince->d > 4) {
+                
+                if ($daysSince->d > 3) {
+                    $html = NULL;
                     $html .= '<div style="width: 100%;" class="order_alert_customer" id="order_data">';
                     $html .= '<h3>Its been: '.$daysSince->d.' days since a warranty alert email was sent to the customer. They have still yet to register their order for warranty. Consider sending a reminder email!</h3>';
                     $html .= '</div>';
                     $html .= '<div id="order_data" class="emailer_send_alert">';
-                    $html .= '<button type="submit" class="button save_order button-primary" name="save" value="Update">Send a reminder Email</button>';
+                    $html .= '<button type="submit" id="send-alert" class="button save_order button-primary">Send a reminder Email</button>';
                     $html .= '</div>';
                     return $html;
                 }    
@@ -75,9 +71,9 @@ class Order
         
         function get_user_initials($first, $last){
             if ($first || $last){
-                $userInitials = '<span class="customer-avatar">' . substr($first, 0, 1) . ' ' . substr($last, 0, 1) . '</span>';
+                $userInitials = '<div class="customer-circle"><span class="customer-avatar">' . substr($first, 0, 1) . ' ' . substr($last, 0, 1) . '</span></div>';
             } else {
-                $userInitials = '<span class="customer-avatar">- -</span>';
+                $userInitials = '<div class="customer-circle"><span class="customer-avatar">- -</span></div>';
             }
             return $userInitials;
         }
@@ -100,27 +96,31 @@ class Order
 
         $html .= '<div style="width: 50%; display: inline-block;" id="order_data" class="order_data_column">';
         $html .= '<h3>Billing</h3>';
-        $html .= '<p>First Name: ' . $first . '</p>';
-        $html .= '<p>Last Name: ' . $last . '</p>';
-        $html .= '<p>Email: ' . $email . '</p>';
-        $html .= '<p>Address: ' . $address . '</p>';
+        $html .= '<p>First Name: '. $first .'</p>';
+        $html .= '<p>Last Name: '. $last .'</p>';
+        $html .= '<p>Email: '. $email .'</p>';
+        $html .= '<p>Address: '. $address .'</p>';
         $html .= '</div>';
 
-        $html .= alert_customer($warrantyClaimed, $warranty);
+        $html .= alert_customer($warranty);
         echo $html;
         ?>
         <style>
-            .customer-avatar{
-                font-size: 12px;
-                background-color: #efefef;
-                padding: 20px;
-                text-align: center;
-                height: 60px;
-                font-weight: 900;
+            .customer-circle {
                 width: 60px;
+                height: 60px;
+            }
+            .customer-avatar {
+                font-size: 14px;
+                background-color: #efefef;
+                text-align: center;
+                font-weight: 900;
                 color: #cacaca;
                 display: block;
+                line-height: 60px;
                 border-radius: 50%;
+                height: 100%;
+                width: 100%;
             }
             .warrantyAlert {
                 background-color: #efefef;
