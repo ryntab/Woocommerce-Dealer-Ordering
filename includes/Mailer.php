@@ -81,7 +81,7 @@ class Mailer
     
         $to = 'ryantaber17@gmail.com';
         $subject = 'Your warranty registration key from Gravity Paramotors was updated!';
-        $headers = array('Content-Type: text/html; charset=UTF-8','From: My Site Name <support@example.com>');
+        $headers = array('Content-Type: text/html; charset=UTF-8','From: Glidesports.com <support@glidersports.com>');
         
         wp_mail( $to, $subject, $template, $headers );
       

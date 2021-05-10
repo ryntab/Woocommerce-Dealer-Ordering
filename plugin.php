@@ -85,7 +85,7 @@ final class Woo_Dealer_Ordering {
         if (is_admin()) {
             $config = array(
                 'slug' => plugin_basename(__FILE__),
-                'proper_folder_name' => 'plugin-name',
+                'proper_folder_name' => 'Woo-Dealer-Customers',
                 'api_url' => 'https://api.github.com/repos/ryntab/Woocommerce-Warranty-Registration/',
                 'raw_url' => 'https://raw.github.com/ryntab/Woocommerce-Warranty-Registration/master/',
                 'github_url' => 'https://github.com/ryntab/Woocommerce-Warranty-Registration/',

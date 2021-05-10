@@ -34,7 +34,7 @@ class Order
         $last = $customer[0]->customer_last_name ?: get_post_meta($id, 'customer_last_name', true);
         $email = $customer[0]->customer_email ?: get_post_meta($id, 'customer_email', true);
         $customer_ID = $customer[0]->customer_user_id ?: null;
-        $address = $customer[0]->customer_address ?: get_post_meta($id, 'customer_country', true) . get_post_meta($id, 'customer_street_address', true) . get_post_meta($id, 'customer_town', true) . get_post_meta($id, 'customer_state', true)  .  get_post_meta($id, 'customer_zip', true);
+        $address = $customer[0]->customer_address ?: get_post_meta($id, 'customer_country', true) .', '. get_post_meta($id, 'customer_street_address', true) .', '. get_post_meta($id, 'customer_town', true) .', '. get_post_meta($id, 'customer_state', true)  .', '.  get_post_meta($id, 'customer_zip', true);
         
 
 
