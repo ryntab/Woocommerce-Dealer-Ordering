@@ -179,6 +179,7 @@ final class Woo_Dealer_Ordering {
         customer_email text NULL,
         customer_address text NULL,     
 		warranty_claimed BOOL NULL, 
+        alert_sent DATE NULL, 
 		PRIMARY KEY  (order_id)) $charset_collate;";
 		require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
 		dbDelta($sql);

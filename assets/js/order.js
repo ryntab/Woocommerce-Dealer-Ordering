@@ -20,8 +20,11 @@
                     'order_ID': woocommerce_admin_meta_boxes.post_id,
                 },
                 success:function(data) {
-                    console.log(data);
-                    $("#send-alert").prop("disabled",false);
+                    if (data = true){
+                        $("#send-alert").text('Alert sent!').prop("disabled",true);
+                    } else {
+                        $("#send-alert").text('Error!').prop("disabled",true);
+                    }  
                 },
                 error: function(errorThrown){
                     console.log(errorThrown);

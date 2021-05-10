@@ -51,7 +51,7 @@ class Mailer
 
         $wpdb->update('wp_dealer_customers', array('alert_sent' => date('Y-m-d H:i:s')), array('order_id' => $orderID));
         
-        wp_send_json($result[0]->order_serial);
+        wp_send_json(true);
     }
 
     //Email sent when serial is updated.
@@ -95,7 +95,7 @@ class Mailer
 
     public function update_sent_email_date($orderID){
         global $wpdb;
-        $wpdb->update('wp_dealer_customers', array('alert_sent' => date('Y-m-d H:i:s')), array('order_id' => $orderID));
+        $wpdb->update('wp_dealer_customers', array('alert_sent' => date('Y-m-d')), array('order_id' => $orderID));
     }
     
 }
