@@ -34,7 +34,7 @@ class Order
         $last = $customer[0]->customer_last_name ?: get_post_meta($id, 'customer_last_name', true);
         $email = $customer[0]->customer_email ?: get_post_meta($id, 'customer_email', true);
         $customer_ID = $customer[0]->customer_user_id ?: null;
-        $address = $customer[0]->customer_address ?: get_post_meta($id, 'customer_country', true) . get_post_meta($id, 'customer_street_address', true) . get_post_meta($id, 'customer_town', true) . get_post_meta($id, 'customer_state', true)  .  get_post_meta($id, 'customer_zip', true);
+        $address = $customer[0]->customer_address ?: get_post_meta($id, 'customer_country', true) .', '. get_post_meta($id, 'customer_street_address', true) .', '. get_post_meta($id, 'customer_town', true) .', '. get_post_meta($id, 'customer_state', true)  .', '.  get_post_meta($id, 'customer_zip', true);
         
 
 
@@ -47,13 +47,22 @@ class Order
         }
 
 
-        function alert_customer($warranty){
+        function alert_customer($warranty, $customer){
             
             if ($warranty[0]->registered_at != Null){
-                $earlier = new \DateTime($warranty[0]->registered_at);
+                $earlier = new \DateTime($customer[0]->alert_sent);
                 $later = new \DateTime();
-                $daysSince = $later->diff($earlier);
-                
+                $daysSince = $earlier->diff($later);
+                if ($daysSince->m > 0){
+                    $html = NULL;
+                    $html .= '<div style="width: 100%;" class="order_alert_customer">';
+                    $html .= '<p>Its been: '.$daysSince->m.' month(s) since a warranty alert email was sent to the customer. They have still yet to register their order for warranty. Consider contacting this customer directly.</p>';
+                    $html .= '</div>';
+                    $html .= '<div class="emailer_send_alert">';
+                    $html .= '<button type="submit" id="send-alert" class="button save_order button-primary">Send a reminder Email</button>';
+                    $html .= '</div>';
+                    return $html;
+                }
                 if ($daysSince->d > get_option('wrs_remind_admin_email_again')) {
                     $html = NULL;
                     $html .= '<div style="width: 100%;" class="order_alert_customer">';
@@ -100,7 +109,7 @@ class Order
         $html .= '<p>Email: '. $email .'</p>';
         $html .= '<p>Address: '. $address .'</p>';
         $html .= '</div>';
-        $html .= alert_customer($warranty);
+        $html .= alert_customer($warranty, $customer);
         $html .= '</div>';
 
 
